@@ -45,6 +45,12 @@ const NAV_ITEMS: NavItem[] = [
     emoji: "🎵",
     match: (p) => p === "/library/history" || p.startsWith("/library/history"),
   },
+  {
+    href: "/help",
+    label: "Help",
+    emoji: "❓",
+    match: (p) => p === "/help",
+  },
 ];
 
 function NavLink({ item }: { item: NavItem }) {

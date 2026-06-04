@@ -9,15 +9,20 @@ import {
   DRAG_NODE_TYPE_KEY,
   setPaletteDragNodeType,
 } from "@/lib/palette-dnd";
+import { CollapsiblePanel, usePanelCollapsed } from "@/components/ui/collapsible-panel";
 import { useEditorStore } from "@/lib/store";
 import { NODE_TYPES, type NodeType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function NodePalette() {
+const NODE_PALETTE_COLLAPSE_KEY = "beatstack_node_palette_collapsed";
+
+function NodePaletteContent() {
   const { screenToFlowPosition } = useReactFlow();
   const nodes = useEditorStore((s) => s.nodes);
   const addNode = useEditorStore((s) => s.addNode);
+  const collapsed = usePanelCollapsed();
   const usedTypes = getUsedNodeTypes(nodes);
+
   const onDragStart = (event: React.DragEvent, type: NodeType) => {
     if (usedTypes.has(type)) {
       event.preventDefault();
@@ -55,59 +60,84 @@ export function NodePalette() {
   };
 
   return (
-    <aside className="flex w-48 shrink-0 flex-col border-r bg-muted/30">
-      <div className="border-b px-3 py-2">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Nodes
-        </h2>
-        <p className="text-[10px] text-muted-foreground">
-          Drag or click to add
-        </p>
-      </div>
-      <ul className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
+    <>
+      {!collapsed && (
+        <div className="border-b px-3 py-2">
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Nodes
+          </h2>
+          <p className="text-[10px] text-muted-foreground">
+            Drag or click to add
+          </p>
+        </div>
+      )}
+      <ul
+        className={cn(
+          "flex flex-1 flex-col overflow-y-auto",
+          collapsed ? "gap-1.5 p-1.5 pt-10" : "gap-1 p-2",
+        )}
+      >
         {NODE_TYPES.map((type) => {
           const isUsed = usedTypes.has(type);
+          const label = NODE_TYPE_LABELS[type];
           return (
-          <li key={type}>
-            <div
-              draggable={!isUsed}
-              role="button"
-              tabIndex={isUsed ? -1 : 0}
-              aria-disabled={isUsed}
-              title={
-                isUsed
-                  ? `${NODE_TYPE_LABELS[type]} is already on the canvas`
-                  : undefined
-              }
-              onDragStart={(e) => onDragStart(e, type)}
-              onDragEnd={onDragEnd}
-              onClick={() => tryAddType(type)}
-              onKeyDown={(e) => {
-                if (isUsed) return;
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  tryAddType(type);
+            <li key={type}>
+              <div
+                draggable={!isUsed}
+                role="button"
+                tabIndex={isUsed ? -1 : 0}
+                aria-disabled={isUsed}
+                aria-label={label}
+                title={
+                  isUsed ? `${label} is already on the canvas` : label
                 }
-              }}
-              className={cn(
-                "rounded-md border border-border bg-card px-2 py-2 text-sm shadow-sm transition-shadow",
-                isUsed
-                  ? "cursor-not-allowed opacity-45"
-                  : "cursor-grab hover:shadow-md active:cursor-grabbing",
-              )}
-            >
-              <span
+                onDragStart={(e) => onDragStart(e, type)}
+                onDragEnd={onDragEnd}
+                onClick={() => tryAddType(type)}
+                onKeyDown={(e) => {
+                  if (isUsed) return;
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    tryAddType(type);
+                  }
+                }}
                 className={cn(
-                  "mr-2 inline-block size-2 rounded-full",
-                  NODE_TYPE_DOT_COLORS[type],
+                  "rounded-md border border-border bg-card text-sm shadow-sm transition-shadow",
+                  collapsed
+                    ? "flex items-center justify-center px-0 py-2.5"
+                    : "px-2 py-2",
+                  isUsed
+                    ? "cursor-not-allowed opacity-45"
+                    : "cursor-grab hover:shadow-md active:cursor-grabbing",
                 )}
-              />
-              {NODE_TYPE_LABELS[type]}
-            </div>
-          </li>
+              >
+                <span
+                  className={cn(
+                    "inline-block size-2.5 rounded-full",
+                    NODE_TYPE_DOT_COLORS[type],
+                    !collapsed && "mr-2",
+                  )}
+                />
+                {!collapsed && label}
+              </div>
+            </li>
           );
         })}
       </ul>
-    </aside>
+    </>
+  );
+}
+
+export function NodePalette() {
+  return (
+    <CollapsiblePanel
+      storageKey={NODE_PALETTE_COLLAPSE_KEY}
+      ariaLabel="node palette"
+      expandedClassName="w-48"
+      collapsedClassName="w-12"
+      panelClassName="bg-muted/30"
+    >
+      <NodePaletteContent />
+    </CollapsiblePanel>
   );
 }

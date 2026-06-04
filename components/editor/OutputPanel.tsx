@@ -7,6 +7,7 @@ import { EvaluatePromptButton } from "@/components/editor/PromptEvaluateDialog";
 import { SaveToWorkspace } from "@/components/editor/SaveToWorkspace";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useResizableHeight } from "@/lib/use-resizable-height";
 import { useEditorStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -14,10 +15,21 @@ const STYLE_PLACEHOLDER =
   "Connect and configure nodes to generate your prompt";
 const LYRICS_PLACEHOLDER = "Generate lyrics above to preview them here";
 
+const OUTPUT_PANEL_HEIGHT_KEY = "beatstack_output_panel_height";
+const DEFAULT_HEIGHT = 112;
+const MIN_HEIGHT = 96;
+const MAX_HEIGHT = 560;
+
 export function OutputPanel() {
   const computedPrompt = useEditorStore((s) => s.computedPrompt);
   const generatedLyrics = useEditorStore((s) => s.generatedLyrics);
   const [activeTab, setActiveTab] = useState("style");
+  const { height, onResizePointerDown } = useResizableHeight({
+    storageKey: OUTPUT_PANEL_HEIGHT_KEY,
+    defaultHeight: DEFAULT_HEIGHT,
+    minHeight: MIN_HEIGHT,
+    maxHeight: MAX_HEIGHT,
+  });
 
   const hasPrompt = computedPrompt.trim().length > 0;
   const hasLyrics = generatedLyrics.trim().length > 0;
@@ -63,7 +75,21 @@ export function OutputPanel() {
   };
 
   return (
-    <div className="flex h-28 shrink-0 flex-col border-t border-l-[3px] border-l-[#7C3AED] bg-muted/20">
+    <div
+      className="relative flex shrink-0 flex-col border-t border-l-[3px] border-l-[#7C3AED] bg-muted/20"
+      style={{ height }}
+    >
+      <div
+        role="separator"
+        aria-orientation="horizontal"
+        aria-label="Resize style prompt and lyrics panel"
+        title="Drag to resize"
+        onPointerDown={onResizePointerDown}
+        className="absolute -top-1.5 left-0 right-0 z-10 flex h-3 cursor-ns-resize items-center justify-center touch-none"
+      >
+        <span className="h-1 w-12 rounded-full bg-border transition-colors hover:bg-muted-foreground/50" />
+      </div>
+
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}

@@ -129,10 +129,22 @@ export function LibraryPage() {
           ) : (
             <div
               className={cn(
-                "grid gap-4",
-                "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+                "grid gap-3",
+                "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6",
               )}
             >
+              <button
+                type="button"
+                onClick={() => setNewOpen(true)}
+                className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border/80 bg-muted/20 text-muted-foreground transition-colors hover:border-border hover:bg-muted/40 hover:text-foreground"
+              >
+                <span className="flex size-10 items-center justify-center rounded-lg bg-muted">
+                  <Plus className="size-5" />
+                </span>
+                <span className="px-2 text-center text-xs font-medium leading-snug">
+                  New workspace
+                </span>
+              </button>
               {workspaces.map((ws) => (
                 <WorkspaceCard key={ws.id} workspace={ws} />
               ))}

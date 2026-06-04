@@ -26,7 +26,9 @@ import {
   downloadJsonFile,
   parseExportedGraphFile,
 } from "@/lib/graph-export";
+import { HELP_FAQ_ITEMS } from "@/lib/help-faq";
 import { useEditorStore } from "@/lib/store";
+import Link from "next/link";
 
 export function CreateToolbar() {
   const nodes = useEditorStore((s) => s.nodes);
@@ -199,40 +201,21 @@ export function CreateToolbar() {
             <DialogTitle>How to use</DialogTitle>
             <DialogDescription asChild>
               <ul className="mt-2 list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                <li>
-                  Drag node types from the left palette (one of each type per
-                  canvas).
-                </li>
-                <li>
-                  Connect output → input ports to set prompt segment order.
-                </li>
-                <li>
-                  Use <strong>Describe your song</strong> to auto-configure nodes
-                  with AI.
-                </li>
-                <li>
-                  <strong>Presets</strong> in the top bar; <strong>Share</strong>{" "}
-                  copies a link with your graph.
-                </li>
-                <li>
-                  Save generations to a <strong>workspace</strong> from the
-                  output panel.
-                </li>
-                <li>
-                  <strong>Randomize</strong> picks random values for every node.
-                </li>
-                <li>
-                  <strong>Export / Import JSON</strong> — backup full graphs.
-                </li>
-                <li>
-                  <strong>⌘S / Ctrl+S</strong> — open presets to save
-                </li>
-                <li>
-                  <strong>⌘Z / Ctrl+Z</strong> — undo last graph change
-                </li>
+                {HELP_FAQ_ITEMS.map((item) => (
+                  <li key={item.id}>{item.answer}</li>
+                ))}
               </ul>
             </DialogDescription>
           </DialogHeader>
+          <DialogFooter className="sm:justify-start">
+            <Link
+              href="/help"
+              className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+              onClick={() => setHelpOpen(false)}
+            >
+              Full help page (FAQ)
+            </Link>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </header>

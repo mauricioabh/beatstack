@@ -1,8 +1,11 @@
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { AppShell } from "@/components/layout/AppShell";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { softwareApplicationJsonLd } from "@/lib/seo/json-ld";
+import { rootLayoutMetadata } from "@/lib/seo/metadata";
 import { THEME_INIT_SCRIPT } from "@/lib/theme-init-script";
 import "./globals.css";
 
@@ -16,26 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "BeatStack",
-  description: "Node-based visual editor for composing Suno AI music prompts",
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    title: "BeatStack",
-    statusBarStyle: "black-translucent",
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-  },
-};
+export const metadata = rootLayoutMetadata();
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -65,6 +49,7 @@ export default function RootLayout({
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <JsonLd data={softwareApplicationJsonLd()} />
       </head>
       <body className="min-h-full overflow-hidden">
         <ThemeProvider>

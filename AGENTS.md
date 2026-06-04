@@ -50,7 +50,7 @@ Next.js 16 · @xyflow/react · Zustand · Zod · shadcn/ui · Tailwind 4 · Gemi
 - Minimap toggle, fit view, empty state, first-visit hint
 - Animación de aristas al cambiar el grafo (`edgesAnimating`)
 - Panel IA colapsable con estado en `beatstack_ai_panel_open` (`lib/ai-panel.ts`)
-- Help dialog en `Toolbar.tsx` con guía de usuario
+- Help dialog en `CreateToolbar.tsx`; FAQ indexable en `/help` (`lib/help-faq.ts`)
 
 ### PWA
 
@@ -66,6 +66,7 @@ Next.js 16 · @xyflow/react · Zustand · Zod · shadcn/ui · Tailwind 4 · Gemi
 | `Convenciones-de-Git.mdc` | Commits y ramas |
 | `powershell-commands.mdc` | Terminal en Windows |
 | `ui-user-facing.mdc` | Texto en `app/` y `components/` |
+| `omni-visibility.mdc` | Cambios en `app/`, `lib/seo/`, FAQ indexable |
 | `xyflow-editor.mdc` | Canvas, store, prompt |
 
 ## Commands (`.cursor/commands/`)
@@ -84,6 +85,7 @@ Next.js 16 · @xyflow/react · Zustand · Zod · shadcn/ui · Tailwind 4 · Gemi
 | `beatstack-prompt-graph` | Tipos, ensamblado, presets, store, IA, share |
 | `xyflow-react-patterns` | Canvas y nodos React Flow |
 | `nextjs-app-router-patterns` | App Router / Server vs Client |
+| `omni-visibility-engine` | SEO, OG/Twitter, JSON-LD, robots/sitemap, GEO/RAG |
 | `shadcn-ui-patterns` | Componentes shadcn |
 | `ui-shadcn-tailwind` | Layout, a11y, estados UI |
 
@@ -104,6 +106,8 @@ Next.js 16 · @xyflow/react · Zustand · Zod · shadcn/ui · Tailwind 4 · Gemi
 | Variable | Requerida | Uso |
 |----------|-----------|-----|
 | `GEMINI_API_KEY` | Solo para IA | Route handler `/api/ai` |
+| `NEXT_PUBLIC_SITE_URL` | Prod (recomendado) | Canonical, sitemap, OG, JSON-LD (`lib/seo/site.ts`) |
+| `OMNI_ALLOW_PREVIEW_INDEX` | No | `true` indexa deployments preview en Vercel |
 
 ## Fuera de scope (por ahora)
 

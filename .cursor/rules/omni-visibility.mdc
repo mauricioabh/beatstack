@@ -1,0 +1,18 @@
+---
+description: Omni-Visibilidad — SEO, OG/Twitter, JSON-LD y robots al tocar rutas App Router
+globs:
+  - app/**
+  - lib/seo/**
+  - lib/help-faq.ts
+  - components/seo/**
+---
+
+# Omni-Visibility
+
+Al editar archivos bajo `app/` (páginas, layouts, `robots.ts`, `sitemap.ts`, `opengraph-image.tsx`) o `lib/seo/**`:
+
+1. Cargar skill **`omni-visibility-engine`**.
+2. Usar `buildPageMetadata` / `rootLayoutMetadata` — no metadata ad hoc dispersa.
+3. FAQ pública: actualizar `lib/help-faq.ts` y `/help` + JSON-LD en sync.
+4. Nueva ruta pública indexable: añadir a `PUBLIC_SITEMAP_PATHS` y verificar canonical.
+5. Rutas privadas o con PII: `noIndex: true` y excluir del sitemap.

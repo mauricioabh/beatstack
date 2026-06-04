@@ -1,0 +1,40 @@
+---
+description: Patrones del editor React Flow en BeatStack
+globs:
+  - "components/editor/**"
+  - "lib/store.ts"
+  - "lib/prompt.ts"
+alwaysApply: false
+---
+
+# Editor React Flow (@xyflow/react)
+
+## Arquitectura
+
+- `ReactFlowProvider` envuelve el canvas; lógica de drop en `EditorCanvas`
+- `nodeTypes` registrado en `components/editor/nodes/index.ts` — claves = `NodeType`
+- Estado: `nodes`, `edges`, handlers en `lib/store.ts` (`applyNodeChanges`, `applyEdgeChanges`, `addEdge`)
+
+## Drag & drop desde paleta
+
+- `NodePalette` setea `dataTransfer` con `DRAG_NODE_TYPE_KEY`
+- `onDrop` usa `screenToFlowPosition` y `addNode(type, position)`
+
+## Prompt en vivo
+
+- Tras cada cambio relevante, el store recalcula con `assemblePrompt(nodes, edges)`
+- No duplicar esa lógica en componentes de nodo
+
+## Presets
+
+- Serializar `{ nodes, edges }` compatible con tipos `SunoNode` / `SunoEdge`
+- Clave `PRESETS_STORAGE_KEY` en `lib/types.ts` — no renombrar sin migración
+
+## Performance
+
+- Nodos custom memoizados cuando tengan inputs pesados
+- Evitar re-render del canvas completo por estado no relacionado (selectores Zustand finos)
+
+## Ciclos en el grafo
+
+- `topologicalOrder` en `lib/prompt.ts` hace fallback al orden de creación si hay ciclo — no asumir DAG estricto en UI sin avisar al usuario

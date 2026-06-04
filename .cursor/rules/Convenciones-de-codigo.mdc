@@ -1,0 +1,55 @@
+---
+description: Convenciones de código para BeatStack
+globs:
+alwaysApply: true
+---
+
+# Convenciones de código
+
+## TypeScript
+
+- **Strict mode** — evitar `any`; tipos de dominio en `lib/types.ts`
+- Imports al inicio del archivo; alias `@/` para rutas del proyecto
+
+## Componentes
+
+- **Server Components** por defecto; `"use client"` solo con estado, efectos, eventos o APIs del navegador
+- El editor completo es cliente: `components/editor/*` con `"use client"`
+- `app/page.tsx` puede ser Server Component que renderiza `<Editor />`
+- Componentes: `PascalCase.tsx`; lógica pura en `lib/`
+
+## React Flow / Zustand
+
+- Cambios de grafo vía store (`useEditorStore`), no estado duplicado en nodos sueltos
+- Nuevo tipo de nodo: actualizar `NODE_TYPES`, schema Zod, `nodeConfigs`, componente en `nodes/`, registro en `nodes/index.ts` — usar command `/add-node-type`
+- No romper `assemblePrompt` sin revisar orden topológico y nodos `structure`
+
+## Validación
+
+- Datos de nodo validados con schemas en `lib/types.ts`
+- Formularios en nodos: validar antes de persistir en `node.data`
+
+## UI visible al usuario
+
+- Ver regla `ui-user-facing.mdc` y skills `ui-shadcn-tailwind`, `shadcn-ui-patterns`
+- Marca: **BeatStack**; destino del prompt: Suno (nombre de producto permitido, no claves API)
+
+## Estilos
+
+- **Tailwind** + `cn()` de `lib/utils.ts`
+- Tokens semánticos shadcn (`bg-background`, `text-foreground`); respetar dark mode
+
+## Guardrails
+
+- Sin secretos en código ni en el repo
+- Pedir aprobación antes de cambios amplios en: `lib/prompt.ts`, `lib/store.ts`, `lib/types.ts`
+
+## Tras implementar
+
+| Cambio | Actualizar |
+|--------|------------|
+| Nuevo tipo de nodo | tipos, configs, componente, skill/checklist en command |
+| Nuevo command Cursor | `AGENTS.md` |
+| Dependencia relevante | `README.md` si cambia setup |
+
+Correr `/post-implementation` antes de `/ship` en cambios grandes.

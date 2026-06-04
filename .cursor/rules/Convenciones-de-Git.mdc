@@ -1,0 +1,44 @@
+---
+alwaysApply: true
+---
+
+## Convenciones de Git
+
+### Formato de commits (Conventional Commits)
+tipo(scope): descripción corta en minúsculas
+
+Tipos:
+- feat: nueva funcionalidad
+- fix: corrección de bug
+- refactor: refactorización sin cambio de funcionalidad
+- style: cambios de estilos o UI
+- db: cambios en schema o migraciones
+- chore: configuración, dependencias, tooling
+- docs: documentación
+
+Ejemplos:
+- feat(auth): add google oauth sign in
+- fix(dashboard): correct revenue calculation
+- db(schema): add orders table with relations
+- refactor(user-card): extract avatar component
+
+### Ramas
+- **main** → producción (Vercel Production). No commitear ni hacer push directo.
+- **dev** → desarrollo activo (rama local habitual y remota por defecto en GitHub).
+- **feat/nombre-feature** → features nuevos (base: `dev`)
+- **fix/nombre-bug** → correcciones (base: `dev`)
+
+### Flujo de trabajo (obligatorio)
+1. Trabajar en local en la rama **dev** (o ramas `feat/*` / `fix/*` creadas desde `dev`).
+2. **Commit** y **push** solo a `origin dev`: `git push origin dev`.
+3. Cuando el cambio esté listo para producción: abrir **Pull Request en GitHub** `dev` → `main` y mergear allí.
+4. **Nunca** `git push origin main` ni commits directos en `main`.
+5. Ramas `feat/*` y `fix/*`: PR hacia **dev**, no hacia `main`.
+
+Repositorio remoto: `https://github.com/mauricioabh/beatstack` (público).
+
+### Reglas
+- Commits pequeños y atómicos, un propósito por commit
+- Nunca subir `.env.local` ni secretos
+- Nunca subir `node_modules` ni `.next`
+- Hacer PR de `feat/*` y `fix/*` hacia `dev`; release a producción solo con PR `dev` → `main`

@@ -1,0 +1,34 @@
+---
+description: User-facing copy in English only — no technical jargon
+globs:
+  - "app/**"
+  - "components/**"
+alwaysApply: true
+---
+
+# User-facing UI (BeatStack)
+
+The interface is for **music creators**, not developers. All visible labels, placeholders, toasts, and empty states must be in **English**.
+
+## Do not show on screen
+
+- Environment variable names, file paths, or internal stack details
+- Raw technical errors (`ZodError`, stack traces, hook names)
+- IDE or repository setup instructions
+- API keys or tokens (present or future)
+
+## Allowed
+
+- Brand **BeatStack**, editor actions (add node, copy prompt, save preset)
+- **Suno** as the destination for copied prompts
+- Clear status messages: empty canvas, preset saved, copied to clipboard
+
+## Errors
+
+- Short, actionable English messages ("Could not save preset", "Try again")
+- Technical detail only in `console.error` during development, never in production UI
+
+## Accessibility
+
+- Canvas controls need `aria-label` when there is no visible text
+- Document shortcuts in UI when added (e.g. Delete to remove a node)

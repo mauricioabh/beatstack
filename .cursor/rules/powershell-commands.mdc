@@ -1,0 +1,23 @@
+---
+description: Reglas para comandos de terminal en Windows PowerShell
+globs:
+alwaysApply: true
+---
+
+# PowerShell — Windows
+
+- Usar `;` como separador, **nunca `&&`**
+- `Set-Location` / `cd` para directorios
+- `$env:VAR="valor"` para variables de sesión
+- Preferir `npm run <script>` del `package.json`
+
+## HTTP / red
+
+- **`curl` en PowerShell es alias de `Invoke-WebRequest`**. Usar `curl.exe` o `Invoke-RestMethod -TimeoutSec 30`
+
+## Calidad local
+
+```powershell
+npm run lint
+npm run build
+```

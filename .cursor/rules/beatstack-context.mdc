@@ -1,0 +1,78 @@
+---
+description: Contexto del proyecto BeatStack — editor visual de prompts para Suno
+globs:
+alwaysApply: true
+---
+
+# BeatStack
+
+Editor visual de **prompts para Suno** (generación musical con IA). El usuario conecta nodos en un canvas; el texto final se ensambla por orden topológico de aristas.
+
+## Stack
+
+- **Next.js 16** (App Router) — `app/`
+- **@xyflow/react** — canvas del editor (`components/editor/`)
+- **Zustand** — estado del grafo, undo, presets e IA (`lib/store.ts`)
+- **Zod** — schemas por tipo de nodo (`lib/types.ts`)
+- **shadcn/ui** + **Tailwind CSS 4** — UI (`components/ui/`)
+- **next-themes** — tema claro/oscuro
+- **Gemini** (opcional) — `app/api/ai/route.ts` + `GEMINI_API_KEY`
+- **PWA** — `@ducanh2912/next-pwa` + `public/manifest.json`
+- **Persistencia** — `localStorage` (presets, historial, preferencias UI)
+
+## Dominio del prompt
+
+Tipos de nodo: `genre`, `mood`, `instruments`, `bpm`, `vocals`, `structure`, `era`, `custom`.
+
+- Ensamblado: `lib/prompt.ts` (`assemblePrompt`, orden Kahn, structure al final)
+- Defaults y labels: `lib/nodeConfigs.ts`
+- Registro de nodos React Flow: `components/editor/nodes/`
+
+## Funcionalidades implementadas
+
+| Área | Componentes / lib | Notas |
+|------|-------------------|-------|
+| IA — configurar nodos | `SongConfigurator`, `applyAiConfiguration` | Descripción → nodos + valores |
+| IA — evaluar prompt | `PromptEvaluateDialog`, `OutputPanel` | Score, sugerencias, prompt mejorado |
+| Presets | `PresetsSheet`, `store.savePreset/loadPreset` | Grafos nombrados en localStorage |
+| Historial | `HistorySheet`, `prompt-history.ts` | Últimos 20 prompts (debounce 1s) |
+| Compartir | `use-graph-share`, `GraphShareFromUrl` | URL con `?graph=` (LZ-String) |
+| Export/import | `graph-export.ts`, `Toolbar` | JSON con schema Zod |
+| Randomize | `randomize.ts`, `Toolbar` | Valores aleatorios + pulse animation |
+| Undo | `store.undo`, `use-editor-keyboard` | Ctrl+Z; stack de 50 |
+| Atajos | `use-editor-keyboard` | Ctrl+S → abrir guardar preset |
+| PWA | `next.config.ts`, `manifest.json` | Solo producción |
+
+## Estructura
+
+```
+app/
+  layout.tsx, page.tsx, globals.css
+  api/ai/route.ts  — proxy Gemini (server-side)
+components/
+  editor/          — Editor, Toolbar, paneles, nodes/*
+  ui/              — shadcn
+lib/
+  types.ts         — NODE_TYPES, schemas Zod, claves storage
+  prompt.ts        — lógica de ensamblado (crítica)
+  store.ts         — Zustand, undo, presets, IA
+  nodeConfigs.ts
+  graph-share.ts   — compartir por URL
+  graph-export.ts  — export/import JSON
+  prompt-history.ts
+  ai-config.ts     — schemas respuesta IA
+  ai-client.ts
+```
+
+## Fuera de scope (por ahora)
+
+- API de Suno para generar audio
+- Base de datos, auth, sync en nube
+- Restauración automática del canvas al recargar
+- No asumir Drizzle/Clerk salvo que el usuario lo pida explícitamente
+
+## Documentación para agentes
+
+- Reglas: `.cursor/rules/`
+- Commands: `.cursor/commands/` (ver `AGENTS.md`)
+- Skills: `.cursor/skills/`

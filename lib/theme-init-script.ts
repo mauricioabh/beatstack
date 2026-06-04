@@ -1,0 +1,2 @@
+/** Inline script for layout <head>; mirrors next-themes defaults (class, system, theme key). */
+export const THEME_INIT_SCRIPT = `(function(){try{var d=document.documentElement,s=localStorage.getItem("theme")||"system",t=s==="system"?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":s;d.classList.remove("light","dark");d.classList.add(t);d.style.colorScheme=t}catch(e){}})();`;

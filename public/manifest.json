@@ -4,8 +4,8 @@
   "description": "Node-based visual editor for composing Suno AI music prompts",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#0a0a0a",
+  "background_color": "#14121a",
+  "theme_color": "#14121a",
   "orientation": "any",
   "icons": [
     {

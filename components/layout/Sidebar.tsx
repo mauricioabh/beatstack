@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Beaker } from "lucide-react";
+import { BeatStackLogo } from "@/components/brand/beatstack-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { CollapsiblePanel, usePanelCollapsed } from "@/components/ui/collapsible-panel";
@@ -87,31 +88,11 @@ function SidebarHeader() {
         "max-[899px]:items-center max-[899px]:gap-2 max-[899px]:p-2",
       )}
     >
-      <Link
-        href="/create"
-        className={cn(
-          "flex flex-col items-center",
-          collapsed ? "gap-0" : "gap-1",
-          "max-[899px]:gap-0",
-        )}
-        aria-label="BeatStack home"
-      >
-        <span
-          className="flex size-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 text-sm font-bold text-white shadow-sm"
-          aria-hidden
-        >
-          B
-        </span>
-        <span
-          className={cn(
-            "text-center text-sm font-bold tracking-tight",
-            collapsed && "sr-only",
-            "max-[899px]:sr-only",
-          )}
-        >
-          BeatStack
-        </span>
-      </Link>
+      <BeatStackLogo
+        showLabel={!collapsed}
+        className={cn(collapsed ? "gap-0" : undefined, "max-[899px]:gap-0")}
+        labelClassName={!collapsed ? "max-[899px]:sr-only" : undefined}
+      />
 
       <div
         className={cn(

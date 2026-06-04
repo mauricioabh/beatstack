@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 import { Beaker } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { CollapsiblePanel, usePanelCollapsed } from "@/components/ui/collapsible-panel";
 import { cn } from "@/lib/utils";
+
+const NAV_SIDEBAR_COLLAPSE_KEY = "beatstack_nav_sidebar_collapsed";
 
 type NavItem = {
   href: string;
@@ -45,6 +48,7 @@ const NAV_ITEMS: NavItem[] = [
 
 function NavLink({ item }: { item: NavItem }) {
   const pathname = usePathname();
+  const collapsed = usePanelCollapsed();
   const active = item.match
     ? item.match(pathname)
     : pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -53,7 +57,8 @@ function NavLink({ item }: { item: NavItem }) {
     <Link
       href={item.href}
       className={cn(
-        "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors",
+        "flex items-center rounded-lg py-2 text-sm font-medium transition-colors",
+        collapsed ? "justify-center px-2" : "gap-2.5 px-2.5",
         "max-[899px]:justify-center max-[899px]:px-2",
         active
           ? "bg-sidebar-accent text-sidebar-accent-foreground"
@@ -64,58 +69,153 @@ function NavLink({ item }: { item: NavItem }) {
       <span className="text-base leading-none" aria-hidden>
         {item.emoji}
       </span>
-      <span className="max-[899px]:sr-only">{item.label}</span>
+      <span className={cn(collapsed && "sr-only", "max-[899px]:sr-only")}>
+        {item.label}
+      </span>
     </Link>
+  );
+}
+
+function SidebarHeader() {
+  const collapsed = usePanelCollapsed();
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col border-b border-sidebar-border",
+        collapsed ? "items-center gap-2 p-2 pt-10" : "gap-4 p-4",
+        "max-[899px]:items-center max-[899px]:gap-2 max-[899px]:p-2",
+      )}
+    >
+      <Link
+        href="/create"
+        className={cn(
+          "flex flex-col items-center",
+          collapsed ? "gap-0" : "gap-1",
+          "max-[899px]:gap-0",
+        )}
+        aria-label="BeatStack home"
+      >
+        <span
+          className="flex size-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 text-sm font-bold text-white shadow-sm"
+          aria-hidden
+        >
+          B
+        </span>
+        <span
+          className={cn(
+            "text-center text-sm font-bold tracking-tight",
+            collapsed && "sr-only",
+            "max-[899px]:sr-only",
+          )}
+        >
+          BeatStack
+        </span>
+      </Link>
+
+      <div
+        className={cn(
+          "flex items-center",
+          collapsed ? "justify-center" : "gap-2.5",
+          "max-[899px]:flex-col max-[899px]:gap-1",
+        )}
+      >
+        <div
+          className="size-9 shrink-0 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400"
+          aria-hidden
+        />
+        <div
+          className={cn(
+            "min-w-0 flex-1",
+            collapsed && "sr-only",
+            "max-[899px]:sr-only",
+          )}
+        >
+          <p className="truncate text-xs font-medium">Free plan</p>
+          <p className="text-xs text-muted-foreground">0 credits</p>
+        </div>
+      </div>
+
+      <Button
+        type="button"
+        variant="default"
+        size="sm"
+        className={cn(
+          "w-full",
+          collapsed && "sr-only",
+          "max-[899px]:sr-only",
+        )}
+        disabled
+        title="Coming soon"
+      >
+        Upgrade to Pro
+      </Button>
+    </div>
+  );
+}
+
+function SidebarFooter() {
+  const collapsed = usePanelCollapsed();
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-2 border-t border-sidebar-border",
+        collapsed ? "items-center p-2" : "p-3",
+        "max-[899px]:items-center max-[899px]:p-2",
+      )}
+    >
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        className={cn(
+          "gap-2",
+          collapsed
+            ? "size-8 justify-center p-0"
+            : "w-full justify-start",
+          "max-[899px]:size-8 max-[899px]:p-0 max-[899px]:justify-center",
+        )}
+        disabled
+        title="Labs — coming soon"
+      >
+        <Beaker className="size-4 shrink-0" />
+        <span className={cn(collapsed && "sr-only", "max-[899px]:sr-only")}>
+          Labs
+        </span>
+      </Button>
+      <div
+        className={cn(
+          "flex items-center gap-2",
+          collapsed ? "justify-center px-0" : "justify-between px-1",
+          "max-[899px]:justify-center",
+        )}
+      >
+        <span
+          className={cn(
+            "text-xs text-muted-foreground",
+            collapsed && "sr-only",
+            "max-[899px]:sr-only",
+          )}
+        >
+          Theme
+        </span>
+        <ThemeToggle />
+      </div>
+    </div>
   );
 }
 
 export function Sidebar() {
   return (
-    <aside
-      className={cn(
-        "flex w-[200px] shrink-0 flex-col border-r bg-sidebar text-sidebar-foreground",
-        "max-[899px]:w-12",
-      )}
+    <CollapsiblePanel
+      storageKey={NAV_SIDEBAR_COLLAPSE_KEY}
+      ariaLabel="navigation"
+      expandedClassName="w-[200px]"
+      collapsedClassName="w-12"
+      panelClassName="bg-sidebar text-sidebar-foreground"
     >
-      <div className="flex flex-col gap-4 border-b border-sidebar-border p-4 max-[899px]:items-center max-[899px]:p-2">
-        <Link
-          href="/create"
-          className="flex flex-col items-center gap-1 max-[899px]:gap-0"
-          aria-label="BeatStack home"
-        >
-          <span
-            className="flex size-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 text-sm font-bold text-white shadow-sm"
-            aria-hidden
-          >
-            B
-          </span>
-          <span className="text-center text-sm font-bold tracking-tight max-[899px]:sr-only">
-            BeatStack
-          </span>
-        </Link>
-
-        <div className="flex items-center gap-2.5 max-[899px]:flex-col max-[899px]:gap-1">
-          <div
-            className="size-9 shrink-0 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400"
-            aria-hidden
-          />
-          <div className="min-w-0 flex-1 max-[899px]:sr-only">
-            <p className="truncate text-xs font-medium">Free plan</p>
-            <p className="text-xs text-muted-foreground">0 credits</p>
-          </div>
-        </div>
-
-        <Button
-          type="button"
-          variant="default"
-          size="sm"
-          className="w-full max-[899px]:sr-only"
-          disabled
-          title="Coming soon"
-        >
-          Upgrade to Pro
-        </Button>
-      </div>
+      <SidebarHeader />
 
       <nav className="flex flex-1 flex-col gap-0.5 p-2" aria-label="Main">
         {NAV_ITEMS.map((item) => (
@@ -123,25 +223,7 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="flex flex-col gap-2 border-t border-sidebar-border p-3 max-[899px]:items-center max-[899px]:p-2">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start gap-2 max-[899px]:size-8 max-[899px]:p-0 max-[899px]:justify-center"
-          disabled
-          title="Labs — coming soon"
-        >
-          <Beaker className="size-4 shrink-0" />
-          <span className="max-[899px]:sr-only">Labs</span>
-        </Button>
-        <div className="flex items-center justify-between gap-2 px-1 max-[899px]:justify-center">
-          <span className="text-xs text-muted-foreground max-[899px]:sr-only">
-            Theme
-          </span>
-          <ThemeToggle />
-        </div>
-      </div>
-    </aside>
+      <SidebarFooter />
+    </CollapsiblePanel>
   );
 }

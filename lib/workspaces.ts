@@ -17,6 +17,10 @@ export type Workspace = {
   createdAt: number;
   updatedAt: number;
   items: WorkspaceItem[];
+  /** Overrides auto cover; use with coverStyleFromSeed / WorkspaceCoverArt. */
+  coverSeed?: string;
+  /** Custom cover image (data URL), shown instead of generated art. */
+  coverImage?: string;
 };
 
 export function generateId(): string {
@@ -75,6 +79,31 @@ export function updateWorkspace(workspace: Workspace): void {
   );
   persistWorkspaces(workspaces);
   notifyWorkspacesUpdated();
+}
+
+export type WorkspaceCoverPatch = {
+  coverSeed?: string;
+  coverImage?: string | null;
+};
+
+export function setWorkspaceCover(
+  workspaceId: string,
+  patch: WorkspaceCoverPatch,
+): boolean {
+  const workspace = getWorkspace(workspaceId);
+  if (!workspace) return false;
+
+  const next: Workspace = { ...workspace };
+  if (patch.coverSeed !== undefined) {
+    if (patch.coverSeed) next.coverSeed = patch.coverSeed;
+    else delete next.coverSeed;
+  }
+  if (patch.coverImage !== undefined) {
+    if (patch.coverImage) next.coverImage = patch.coverImage;
+    else delete next.coverImage;
+  }
+  updateWorkspace(next);
+  return true;
 }
 
 export function deleteWorkspace(id: string): void {

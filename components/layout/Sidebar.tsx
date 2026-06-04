@@ -20,10 +20,10 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   {
-    href: "/create",
+    href: "/home",
     label: "Home",
     emoji: "🏠",
-    match: (p) => p === "/create",
+    match: (p) => p === "/home",
   },
   {
     href: "/create",

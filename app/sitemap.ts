@@ -9,7 +9,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return PUBLIC_SITEMAP_PATHS.map((path) => ({
     url: new URL(path, siteUrl).href,
     lastModified,
-    changeFrequency: path === "/" || path === "/create" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : path === "/create" ? 0.9 : 0.7,
+    changeFrequency:
+      path === "/" || path === "/home" || path === "/create"
+        ? "weekly"
+        : "monthly",
+    priority:
+      path === "/" || path === "/home"
+        ? 1
+        : path === "/create"
+          ? 0.9
+          : 0.7,
   }));
 }

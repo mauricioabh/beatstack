@@ -1,6 +1,7 @@
 /** Public routes included in sitemap.xml (stable, no sensitive query state). */
 export const PUBLIC_SITEMAP_PATHS = [
   "/",
+  "/home",
   "/create",
   "/help",
   "/library",

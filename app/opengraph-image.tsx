@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { PRODUCT_NAME } from "@/lib/seo/site";
 
-export const runtime = "edge";
 export const alt = `${PRODUCT_NAME} — Suno prompt editor`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

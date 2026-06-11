@@ -1,0 +1,17 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Connect repo in Dashboard or apply via Blueprint; auto-deploy on push to branch.
+services:
+  - type: web
+    name: beatstack
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm run start
+    autoDeploy: true
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false

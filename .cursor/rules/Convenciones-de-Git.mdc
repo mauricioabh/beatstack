@@ -23,7 +23,7 @@ Ejemplos:
 - refactor(user-card): extract avatar component
 
 ### Ramas
-- **main** → producción (Vercel Production). No commitear ni hacer push directo.
+- **main** → producción (Render auto-deploy). No commitear ni hacer push directo.
 - **dev** → desarrollo activo (rama local habitual y remota por defecto en GitHub).
 - **feat/nombre-feature** → features nuevos (base: `dev`)
 - **fix/nombre-bug** → correcciones (base: `dev`)

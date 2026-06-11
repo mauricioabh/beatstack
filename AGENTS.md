@@ -105,9 +105,9 @@ Next.js 16 · @xyflow/react · Zustand · Zod · shadcn/ui · Tailwind 4 · Gemi
 
 | Variable | Requerida | Uso |
 |----------|-----------|-----|
-| `GEMINI_API_KEY` | Solo para IA | Route handler `/api/ai` |
-| `NEXT_PUBLIC_SITE_URL` | Prod (recomendado) | Canonical, sitemap, OG, JSON-LD (`lib/seo/site.ts`) |
-| `OMNI_ALLOW_PREVIEW_INDEX` | No | `true` indexa deployments preview en Vercel |
+| `GEMINI_API_KEY` | Solo para IA | Route handlers `/api/ai`, `/api/lyrics` |
+| `NEXT_PUBLIC_SITE_URL` | Prod (recomendado) | Canonical, sitemap, OG, JSON-LD (`lib/seo/site.ts`); si falta, fallback `RENDER_EXTERNAL_URL` |
+| `OMNI_ALLOW_PREVIEW_INDEX` | No | `true` indexa deployments preview (Render branch ≠ `main`, Vercel preview) |
 
 ## Fuera de scope (por ahora)
 

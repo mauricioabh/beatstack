@@ -27,8 +27,8 @@ Aplicar cuando:
 
 1. **Server-first:** metadata y JSON-LD en Server Components / exports de layout/page. FAQ pública no solo en dialogs cliente.
 2. **Fuente única:** `lib/seo/site.ts`, `lib/seo/metadata.ts` (`buildPageMetadata`), `lib/seo/json-ld.ts`, `lib/seo/routes.ts`.
-3. **`metadataBase`** en root vía `rootLayoutMetadata()` + `NEXT_PUBLIC_SITE_URL` (fallback `VERCEL_URL`, dev `localhost:3000`).
-4. **No indexar** previews (`VERCEL_ENV=preview`), workspaces privados, URLs con estado sensible (`/create?graph=` usa `generateMetadata` + `GRAPH_URL_PARAM`).
+3. **`metadataBase`** en root vía `rootLayoutMetadata()` + `NEXT_PUBLIC_SITE_URL` (fallback `RENDER_EXTERNAL_URL`, `VERCEL_URL`, dev `localhost:3000`).
+4. **No indexar** previews (`RENDER_GIT_BRANCH` ≠ `main`, `VERCEL_ENV=preview`), workspaces privados, URLs con estado sensible (`/create?graph=` usa `generateMetadata` + `GRAPH_URL_PARAM`).
 5. **PWA:** conservar `manifest` e icons al extender metadata.
 
 ## SEO (Metadata API)

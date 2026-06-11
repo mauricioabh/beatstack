@@ -33,6 +33,19 @@ GEMINI_API_KEY=tu_clave_de_google_ai_studio
 
 Sin esta variable, el editor funciona con normalidad; solo fallan las acciones de IA.
 
+### Despliegue (Render)
+
+Producción en [Render](https://render.com) — ver `render.yaml`. Cada merge a **main** dispara auto-deploy.
+
+Variables en el Dashboard del servicio:
+
+```env
+GEMINI_API_KEY=tu_clave_de_google_ai_studio
+NEXT_PUBLIC_SITE_URL=https://tu-dominio-o.onrender.com
+```
+
+Build: `npm install && npm run build` · Start: `npm run start`
+
 ## Uso del editor
 
 ### Canvas y nodos

@@ -10,14 +10,29 @@ export function getSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   if (configured) return configured.replace(/\/$/, "");
 
+  const render = process.env.RENDER_EXTERNAL_URL?.trim();
+  if (render) return render.replace(/\/$/, "");
+
   const vercel = process.env.VERCEL_URL?.trim();
   if (vercel) return `https://${vercel.replace(/\/$/, "")}`;
 
   return "http://localhost:3000";
 }
 
-/** Block indexing on Vercel preview deployments unless explicitly overridden. */
+/** Production branch on Render; preview / non-main deploys should not be indexed. */
+export const PRODUCTION_GIT_BRANCH = "main";
+
+export function isPreviewDeployment(): boolean {
+  if (process.env.VERCEL_ENV === "preview") return true;
+
+  const renderBranch = process.env.RENDER_GIT_BRANCH?.trim();
+  if (renderBranch && renderBranch !== PRODUCTION_GIT_BRANCH) return true;
+
+  return false;
+}
+
+/** Block indexing on preview deployments unless explicitly overridden. */
 export function allowSearchIndexing(): boolean {
   if (process.env.OMNI_ALLOW_PREVIEW_INDEX === "true") return true;
-  return process.env.VERCEL_ENV !== "preview";
+  return !isPreviewDeployment();
 }

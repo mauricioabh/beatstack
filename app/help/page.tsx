@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { HELP_FAQ_ITEMS } from "@/lib/help-faq";
+import { HELP_FAQ_ITEMS, HELP_FAQ_LAST_UPDATED } from "@/lib/help-faq";
 import { faqPageJsonLd } from "@/lib/seo/json-ld";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -23,8 +23,18 @@ export default function HelpPage() {
         </p>
         <h1 className="text-3xl font-semibold tracking-tight">Help</h1>
         <p className="text-muted-foreground">
-          Guide for the BeatStack visual Suno prompt editor. This page is
-          indexable for search engines and AI assistants.
+          BeatStack is a free, browser-based visual editor for composing Suno AI
+          music prompts. Connect genre, mood, BPM, vocals, and structure nodes
+          on a canvas; the assembled Suno prompt updates in real time at the
+          bottom output panel.
+        </p>
+        <p className="text-muted-foreground">
+          This help page covers how to add and connect nodes, auto-configure
+          with AI, save presets, share graphs by URL, and use keyboard
+          shortcuts. It is indexable for search engines and AI assistants.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Last updated: {HELP_FAQ_LAST_UPDATED}
         </p>
       </header>
 

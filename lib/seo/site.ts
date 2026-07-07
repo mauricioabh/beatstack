@@ -19,14 +19,16 @@ export function getSiteUrl(): string {
   return "http://localhost:3000";
 }
 
-/** Production branch on Render; preview / non-main deploys should not be indexed. */
-export const PRODUCTION_GIT_BRANCH = "main";
+const PRODUCTION_GIT_BRANCHES = new Set(["main", "master"]);
 
 export function isPreviewDeployment(): boolean {
   if (process.env.VERCEL_ENV === "preview") return true;
 
   const renderBranch = process.env.RENDER_GIT_BRANCH?.trim();
-  if (renderBranch && renderBranch !== PRODUCTION_GIT_BRANCH) return true;
+  if (renderBranch && !PRODUCTION_GIT_BRANCHES.has(renderBranch)) return true;
+
+  const vercelBranch = process.env.VERCEL_GIT_COMMIT_REF?.trim();
+  if (vercelBranch && !PRODUCTION_GIT_BRANCHES.has(vercelBranch)) return true;
 
   return false;
 }

@@ -4,25 +4,28 @@ export type HelpFaqItem = {
   answer: string;
 };
 
+/** Last content review for AEO freshness signals. */
+export const HELP_FAQ_LAST_UPDATED = "2026-07-06";
+
 /** Single source for in-app Help dialog, /help page, and FAQPage JSON-LD. */
 export const HELP_FAQ_ITEMS: HelpFaqItem[] = [
   {
     id: "add-nodes",
     question: "How do I add nodes to the canvas?",
     answer:
-      "Drag node types from the left palette onto the canvas. You can place one node of each type per canvas.",
+      "Drag a node type from the left palette onto the canvas, or click a palette item to place it at the center. BeatStack allows only one node of each type per canvas, so duplicate types are blocked automatically. Available types include genre, mood, instruments, BPM, vocals, structure, era, and custom.",
   },
   {
     id: "connect-nodes",
     question: "How does prompt segment order work?",
     answer:
-      "Connect output ports to input ports on other nodes. The assembled Suno prompt follows the topological order of those connections.",
+      "Connect each node's output port to another node's input port to define the order of Suno prompt segments. BeatStack assembles the final text by following the topological order of those connections from start to end. Structure nodes are always appended at the end of the prompt, regardless of where they sit in the graph.",
   },
   {
     id: "ai-configure",
     question: "How do I auto-configure nodes with AI?",
     answer:
-      'Use "Describe your song" in the AI panel to fill node values from a text description. Requires GEMINI_API_KEY on the server.',
+      'Open the "Describe your song" panel above the canvas, type a song description in English or Spanish, and click Configure nodes. Gemini creates missing nodes, fills their values from your description, and auto-layouts new nodes on the canvas. This feature requires GEMINI_API_KEY configured on the server; without it, the rest of the editor still works.',
   },
   {
     id: "presets-share",

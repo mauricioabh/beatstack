@@ -2,6 +2,27 @@
 
 Editor visual de **prompts para Suno**: conecta nodos (género, mood, BPM, voces, etc.) en un canvas y el texto final se ensambla automáticamente según el orden de las conexiones.
 
+## What is BeatStack?
+
+BeatStack is a free, browser-based visual editor for composing Suno AI music prompts. Connect genre, mood, BPM, vocals, and structure nodes on a canvas; the app assembles a shareable Suno prompt in real time.
+
+**Live:** https://beatstack-mauricioabh.onrender.com
+
+## Who is it for?
+
+Musicians, producers, and Suno users who want to experiment with structured prompts without writing long text by hand. BeatStack works entirely in the browser with local presets and URL sharing—no account required.
+
+## FAQ
+
+### How do I add nodes to the canvas?
+Drag node types from the left palette onto the canvas, or click to place at center. Only one node of each type is allowed per canvas.
+
+### How does prompt segment order work?
+Connect output ports to input ports; the assembled Suno prompt follows connection order (structure nodes always append last).
+
+### How do I auto-configure nodes with AI?
+Use "Describe your song" in the AI panel to fill nodes from a text description. Requires GEMINI_API_KEY on the server.
+
 ## Stack
 
 - **Next.js 16** (App Router)
@@ -159,6 +180,28 @@ npm run lint     # ESLint
 ## Documentación para agentes
 
 Ver [AGENTS.md](./AGENTS.md), `.cursor/rules/` y `.cursor/skills/`.
+
+## Production practices
+
+### SEO / AEO (`lib/seo/`)
+
+Plantilla reutilizable para copiar a otros repos Next.js (portfolio, wayool, SaaS nuevos):
+
+| Archivo | Propósito |
+|---------|-----------|
+| `lib/seo/site.ts` | `getSiteUrl()`, `isPreviewDeployment()`, `allowSearchIndexing()` |
+| `lib/seo/metadata.ts` | `rootLayoutMetadata()`, `buildPageMetadata()` |
+| `lib/seo/routes.ts` | Rutas públicas para `sitemap.ts` |
+| `lib/seo/json-ld.ts` | Helpers schema.org por tipo de página |
+| `components/seo/JsonLd.tsx` | Componente `<script type="application/ld+json">` |
+| `app/robots.ts` | Reglas crawlers + bots IA (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) |
+| `app/sitemap.ts` | Sitemap de rutas estables |
+
+**Variables:** `NEXT_PUBLIC_SITE_URL`, `OMNI_ALLOW_PREVIEW_INDEX` (opcional).
+
+En preview (Vercel `VERCEL_ENV=preview` o branch ≠ `main`/`master`): `noindex` en metadata y `Disallow: /` en robots.
+
+**Plan maestro:** `portfolio/docs/seo-aeo-roadmap.md`
 
 ## Fuera de alcance actual
 

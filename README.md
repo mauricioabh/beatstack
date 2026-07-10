@@ -183,6 +183,11 @@ Ver [AGENTS.md](./AGENTS.md), `.cursor/rules/` y `.cursor/skills/`.
 
 ## Production practices
 
+### Core Web Vitals
+
+- **RUM:** `@sentry/nextjs` with `browserTracingIntegration` — set `SENTRY_DSN` in `.env.local` (see `.env.example`). Web Vitals in Sentry Performance.
+- **Lab:** Lighthouse CI on PRs (`.github/workflows/lighthouse.yml`).
+
 ### SEO / AEO (`lib/seo/`)
 
 Plantilla reutilizable para copiar a otros repos Next.js (portfolio, wayool, SaaS nuevos):
